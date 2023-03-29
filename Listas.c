@@ -10,6 +10,8 @@ void insert(char dato);
 void insert1(char dato);
 void insertn(char dato, int pos);
 char remueve();
+char remueve1();
+char remueven(int pos);
 void imprimeLista();
 
 struct Nodo 
@@ -22,6 +24,7 @@ typedef struct Nodo nodo;
 
 nodo *raiz = NULL;					//  Creamos una lista vacía. 
 
+// Funciones para insertar
 void insert(char dato)
 {
 	nodo *nuevo = NULL;
@@ -146,6 +149,44 @@ char remueve1()
 	return dato;
 }
 
+char remueven(int pos)
+{
+	nodo *recorre = NULL;
+	nodo *elimina = NULL;
+	char dato;
+	int cont;
+	if( raiz == NULL ) 
+	{
+		printf("La lista está vacía. No hay nada que remover.");
+		return '\0';
+	}
+	recorre = raiz;
+	if(pos == 1)
+	{
+		raiz = raiz -> sig;
+		dato = recorre->info;
+		free(recorre);
+		return dato;
+	}
+	elimina = recorre ->sig;
+	cont = 1;
+	while( recorre->sig != NULL && cont < pos - 1 )
+	{
+		elimina = elimina ->sig;
+		recorre = recorre ->sig;
+		cont++;
+	}
+	if(cont < pos - 1)
+	{
+		printf("Error: no hay nada que borrar");
+		return '\0';
+	}
+	recorre ->sig = elimina -> sig;
+	dato = elimina ->info;
+	free(elimina);
+	return dato;
+}
+
 void imprimeLista()
 {
 	nodo *recorre = raiz;
@@ -169,13 +210,10 @@ int main()
 	
 	imprimeLista();
 
-	insertn('x',3);
+	printf("El dato que salio: %c\n", remueven(3));
 	imprimeLista();
 
-	insertn('y', 50);
-	imprimeLista();
-
-	printf("El dato que salio: %c\n", remueve1());
+	printf("El dato que salio: %c\n", remueven(50));
 	imprimeLista();
 
 	pausa;
