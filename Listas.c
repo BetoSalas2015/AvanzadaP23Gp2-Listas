@@ -5,14 +5,7 @@
 #define pausa system("pause")
 #define cls system("cls")
 
-//   Prototipos
-void insert(char dato);
-void insert1(char dato);
-void insertn(char dato, int pos);
-char remueve();
-char remueve1();
-char remueven(int pos);
-void imprimeLista();
+
 
 struct Nodo 
 { 
@@ -20,12 +13,17 @@ struct Nodo
 	struct Nodo *sig;				//  el siguiente es un nodo...
 };	
 
-typedef struct Nodo nodo;			
+typedef struct Nodo nodo;	
 
-nodo *raiz = NULL;					//  Creamos una lista vacía. 
+//   Prototipos
+
+
+ 				//  Creamos una lista vacía. 
 
 // Funciones para insertar
-void insert(char dato)
+
+
+insert(nodo *raiz, char dato)
 {
 	nodo *nuevo = NULL;
 	nuevo = ( nodo * ) malloc( sizeof(nodo) );
@@ -49,9 +47,10 @@ void insert(char dato)
 		}
 		recorre ->sig = nuevo;
 	}
+	return raiz;
 }
 
-void insertn(char dato, int pos)
+nodo *insertn(nodo *raiz, char dato, int pos)
 {
 	int cont;
 	nodo *nuevo = NULL;
@@ -66,7 +65,7 @@ void insertn(char dato, int pos)
 	if( raiz == NULL ) 
 	{
 		raiz = nuevo;
-		return;
+		return raiz;
 	}
 	if( pos == 1) 
 	{
@@ -85,10 +84,11 @@ void insertn(char dato, int pos)
 		nuevo -> sig = recorre -> sig;
 		recorre ->sig = nuevo;
 	}
+	return raiz;
 }
 
 
-void insert1(char dato)
+nodo *insert1(nodo *raiz, char dato)
 {
 	nodo *nuevo = NULL;
 	nuevo = ( nodo * ) malloc( sizeof(nodo) );
@@ -100,26 +100,27 @@ void insert1(char dato)
 	nuevo ->info = dato;
 	nuevo ->sig = raiz;
 	raiz = nuevo;
+	return nuevo;
 }
 
 //  Funciones para remover
-char remueve()
+nodo *remueve(nodo *raiz,char *dato)
 {
 	nodo *recorre = NULL;
 	nodo *ultimo = NULL;
-	char dato;
+	
 	if( raiz == NULL ) 
 	{
 		printf("La lista está vacía. No hay nada que remover.");
-		return '\0';
+		return raiz;
 	}
 	recorre = raiz;
 	if(recorre ->sig == NULL)
 	{
 		raiz = NULL;
-		dato = recorre->info;
+		*dato = recorre->info;
 		free(recorre);
-		return dato;
+		return raiz;
 	}
 	ultimo = recorre ->sig;
 	while(ultimo ->sig != NULL)
@@ -128,12 +129,12 @@ char remueve()
 		recorre = recorre ->sig;
 	}
 	recorre ->sig = NULL;
-	dato = ultimo ->info;
+	*dato = ultimo ->info;
 	free(ultimo);
-	return dato;
+	return raiz;
 }
 
-char remueve1()
+/*char remueve1()
 {
 	nodo *elimina = NULL;
 	char dato;
@@ -185,9 +186,9 @@ char remueven(int pos)
 	dato = elimina ->info;
 	free(elimina);
 	return dato;
-}
+}*/
 
-void imprimeLista()
+void imprimeLista(nodo *raiz)
 {
 	nodo *recorre = raiz;
 	while( recorre != NULL )
@@ -200,21 +201,27 @@ void imprimeLista()
 
 int main()
 {
-	insert('R');
-	insert('o');
-	insert('b');
-	insert('e');
-	insert('r');
-	insert('t');
-	insert('o');
+	nodo *lista1 = NULL, *lista2 = NULL, *lista3 = NULL;
+	char letra;
+
+	lista1 = insertn(lista1, 'R', 1);
+	lista2 = insert1(lista2, 'o');
+	lista1 = insertn(lista1, 'b', 1);
+	lista2 = insert1(lista2, 'e');
+	lista1 = insertn(lista1, 'r',2);
+	lista1 = insertn(lista1, 't', 2);
+	lista2 = insert1(lista2, 'o');
+
+	lista3 = insert(lista3, 'S');
 	
-	imprimeLista();
+	imprimeLista(lista1);
+	imprimeLista(lista2);
+	imprimeLista(lista3);
 
-	printf("El dato que salio: %c\n", remueven(3));
-	imprimeLista();
+	lista1 = remueve(lista1, &letra);
+	printf("Salio %c\n", letra);
+	imprimeLista(lista1);
 
-	printf("El dato que salio: %c\n", remueven(50));
-	imprimeLista();
 
 	pausa;
 	cls;
